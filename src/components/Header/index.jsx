@@ -118,17 +118,7 @@ const NavHeader = () => {
           </nav>
 
           <div className="flex items-center space-x-4">
-            <button
-              onClick={toggleTheme}
-              className="rounded-full p-2 text-gray-700 transition-colors"
-              aria-label="Toggle theme"
-            >
-              {theme === 'light' ? (
-                <Moon className="h-5 w-5" />
-              ) : (
-                <Sun className="h-5 w-5" />
-              )}
-            </button>
+            
 
             <UserSection />
 
