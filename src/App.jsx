@@ -17,6 +17,7 @@ import ResumeEvaluator from './pages/ResumeEvaluator';
 import Podcasts from './pages/Podcasts';
 import ResourcesPage from './pages/Resources';
 import './index.css';
+import ChatbotPopup from './components/Chatbot';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -94,6 +95,7 @@ function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
+        <ChatbotPopup />
       </div>
     </Router>
   );
