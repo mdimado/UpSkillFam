@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../firebase';
 import { Mail, Lock, LogIn } from 'lucide-react';
+import '../App.css'
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
@@ -17,6 +18,17 @@ const LoginForm = () => {
       navigate('/blogs');
     } catch (error) {
       setError(error.message);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+      alert("Logged in with Google successfully!");
+      navigate('/'); 
+    } catch (error) {
+      alert(error.message);
     }
   };
 
@@ -91,6 +103,12 @@ const LoginForm = () => {
           >
             <LogIn size={20} />
             Sign In
+          </button>
+          <button 
+            onClick={handleGoogleSignIn} 
+            className="w-full flex items-center justify-center gap-2 py-2 px-6 rounded-full google-signin-btn"
+          >
+            <i className="fa-brands fa-google" aria-hidden="true"></i> Sign in with Google
           </button>
         </form>
       </div>

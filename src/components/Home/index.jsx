@@ -53,9 +53,9 @@ class Home extends Component {
 
     return (
       <div className="home-container">
+        <video className="bg-video" src="bgvid.mp4" loop muted autoPlay></video>
         <div className="hero-section">
           <div>
-            <video className="bg-video" src="/bgvid.mp4" loop muted autoPlay></video>
             <div className="text-section">
               <div className='cover-container'>
                 <h1 className='main-heading'>

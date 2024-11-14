@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { auth, firestore } from '../firebase';
 import { Mail, Lock, User, Phone, GraduationCap, Sparkles, CalendarClock } from 'lucide-react';
@@ -50,6 +50,17 @@ const SignupForm = () => {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+      alert("Logged in with Google successfully!");
+      navigate('/'); 
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   const inputFields = [
     { name: 'name', label: 'Full Name', type: 'text', icon: User, placeholder: 'Enter your full name' },
     { name: 'email', label: 'Email Address', type: 'email', icon: Mail, placeholder: 'Enter your email' },
@@ -62,6 +73,10 @@ const SignupForm = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+      <video className="background-video" autoPlay loop muted>
+        <source src="/loginvid.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-lg my-8">
         <div className="text-center">
           <Link to="/" className="inline-block mb-6">
@@ -112,6 +127,12 @@ const SignupForm = () => {
           >
             <User size={20} />
             Create Account
+          </button>
+          <button 
+            onClick={handleGoogleSignIn} 
+            className="w-full flex items-center justify-center gap-2 py-2 px-6 rounded-full google-signin-btn"
+          >
+            <i className="fa-brands fa-google" aria-hidden="true"></i> Sign Up with Google
           </button>
         </form>
       </div>
