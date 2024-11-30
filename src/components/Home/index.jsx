@@ -72,7 +72,7 @@ class Home extends Component {
                   <div className='podcast-container'>
                     <video src="/podcastvid.mp4" loop muted autoPlay></video>
                   </div>
-                  seminars<br />
+                  Podcasts<br />
                   <div className='line2'>
                     trainings
                     <span className='ampersand-container'>
@@ -80,7 +80,7 @@ class Home extends Component {
                       <div className='bag-icon'><i className="fas fa-shopping-bag"></i></div>
                     </span>
                     <div>
-                      trainers
+                      mentors
                       <div className='trainer-container'>
                         <video src="/trainingvid.mp4" loop muted autoPlay></video>
                       </div>

@@ -109,7 +109,7 @@ const NavHeader = () => {
           </div>
 
           <nav className="nav-list hidden md:flex items-center space-x-8">
-            <NavLink href="/about" className="nav-link">Home</NavLink>
+            <NavLink href="/" className="nav-link">Home</NavLink>
             <NavLink href="/blogs" className="nav-link">Blogs</NavLink>
             <NavLink href="/communityPage" className="nav-link">Community</NavLink>
             <NavLink href="/podcasts" className="nav-link">Podcasts</NavLink>
@@ -140,7 +140,7 @@ const NavHeader = () => {
           <div className="md:hidden">
             <div className="divide-y divide-gray-200">
               <nav className="flex flex-col space-y-1 py-3">
-                <MobileNavLink href="/about" onClick={() => setIsMenuOpen(false)}>
+                <MobileNavLink href="/" onClick={() => setIsMenuOpen(false)}>
                   Home
                 </MobileNavLink>
                 <MobileNavLink href="/blogs" onClick={() => setIsMenuOpen(false)}>

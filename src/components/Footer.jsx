@@ -53,7 +53,7 @@ const Footer = () => {
         <div>
           <h4 className="font-bold text-gray-900 mb-4">Quick Links</h4>
           <div className="space-y-2 flex flex-col">
-            <NavLink href="/about">Home</NavLink>
+            <NavLink href="/">Home</NavLink>
             <NavLink href="/blogs">Blogs</NavLink>
             <NavLink href="/communityPage">Community</NavLink>
             <NavLink href="/podcasts">Podcasts</NavLink>
@@ -82,10 +82,7 @@ const Footer = () => {
               <Mail size={20} className="text-gray-700" />
               <span>contact@upskillfam.co.in</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <Phone size={20} className="text-gray-700" />
-              <span>+91 73309 62093</span>
-            </div>
+            
             <div className="flex items-center space-x-2">
               <MapPin size={20} className="text-gray-700" />
               <span>Hyderabad, India</span>

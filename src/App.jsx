@@ -22,6 +22,7 @@ import { Toaster } from 'react-hot-toast';
 import Footer from './components/Footer';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
+import AboutUs from './pages/AboutUs';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -53,6 +54,7 @@ function App() {
             {/* Public routes */}
             <Route path="/" element={<Home />} />
             <Route path="/jobs" element={<JobBoard />} />
+            <Route path="/about" element={<AboutUs />} />
             <Route path="/resume-evaluator" element={<ResumeEvaluator />} />
             <Route path="/podcasts" element={<Podcasts />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />

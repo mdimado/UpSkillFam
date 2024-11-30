@@ -1,14 +1,67 @@
 import React from 'react';
-import { Users, Podcast, UserPlus } from 'lucide-react';
+import { Users, Podcast, UserPlus, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const CommunityPage = () => {
   const whatsappGroupLink = "https://chat.whatsapp.com/BZgzJBwSbb49pKIg6ebPNt";
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold mb-8 text-center">Join Our Community</h1>
-      
-      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8 text-center">
+    <div>
+      {/* New Banner Section */}
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="bg-gradient-to-r from-blue-600 via-purple-500 to-pink-500 mb-8"
+      >
+        <div className="container mx-auto px-4 relative overflow-hidden">
+          {/* Background Pattern */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute right-0 top-0 w-64 h-64 bg-white rounded-full -translate-y-32 translate-x-32" />
+            <div className="absolute left-0 bottom-0 w-48 h-48 bg-white rounded-full translate-y-24 -translate-x-24" />
+          </div>
+          
+          <a href="/about" className="block">
+            <div className="py-6 flex items-center justify-between hover:opacity-90 transition-opacity relative z-10">
+              <div className="flex items-center space-x-6">
+                <div className="h-16 w-1 bg-white rounded-full"></div>
+                <div>
+                  <motion.p 
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="text-purple-100 font-medium"
+                  >
+                    New to our community?
+                  </motion.p>
+                  <motion.p 
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="text-2xl font-bold text-white mt-1"
+                  >
+                    Meet the team behind this initiative
+                  </motion.p>
+                </div>
+              </div>
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 }}
+                className="hidden md:flex items-center space-x-2 bg-white/10 px-4 py-2 rounded-full text-white"
+              >
+                <span>Learn more</span>
+                <ArrowRight size={20} />
+              </motion.div>
+            </div>
+          </a>
+        </div>
+      </motion.div>
+
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-4xl font-bold mb-8 text-center">Join Our Community</h1>
+        
+        <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8 text-center">
         <Users size={64} className="mx-auto mb-6 text-blue-600" />
         
         <h2 className="text-2xl font-semibold mb-4">Connect with 1000+ Learners Just Like You!</h2>
@@ -55,6 +108,7 @@ const CommunityPage = () => {
             Mentor applications will be opening soon. Stay connected!
           </div>
         </div>
+      </div>
       </div>
     </div>
   );
