@@ -1,143 +1,63 @@
-import React, { useState, useEffect } from 'react';
-import { Search, FileText, Download, Calendar, User } from 'lucide-react';
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
-import { db, storage } from '../firebase';
-import { ref, getDownloadURL } from 'firebase/storage';
+import React from 'react';
+import { Users, Podcast, UserPlus } from 'lucide-react';
 
-const ResourcesPage = () => {
-  const [resources, setResources] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterType, setFilterType] = useState('');
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchResources();
-  }, []);
-
-  const fetchResources = async () => {
-    try {
-      const resourcesQuery = query(collection(db, 'resources'), orderBy('uploadDate', 'desc'));
-      const querySnapshot = await getDocs(resourcesQuery);
-      const resourcesList = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setResources(resourcesList);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching resources:', error);
-      alert('Error fetching resources. Please try again.');
-      setLoading(false);
-    }
-  };
-
-  const handleDownload = async (resource) => {
-    try {
-      const fileRef = ref(storage, resource.filePath);
-      const url = await getDownloadURL(fileRef);
-      
-      // Create a temporary anchor element to trigger download
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', resource.fileName);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error('Error downloading file:', error);
-      alert('Error downloading file. Please try again.');
-    }
-  };
-
-  const filteredResources = resources.filter(resource => 
-    resource.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    (filterType === '' || resource.fileType === filterType)
-  );
-
-  const getFileIcon = (fileType) => {
-    switch (fileType.toLowerCase()) {
-      case 'pdf':
-        return '📄';
-      case 'ppt':
-      case 'pptx':
-        return '📊';
-      case 'doc':
-      case 'docx':
-        return '📝';
-      default:
-        return '📁';
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
-      </div>
-    );
-  }
+const CommunityPage = () => {
+  const whatsappGroupLink = "https://chat.whatsapp.com/BZgzJBwSbb49pKIg6ebPNt";
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Learning Resources</h1>
+      <h1 className="text-4xl font-bold mb-8 text-center">Join Our Community</h1>
       
-      <div className="flex flex-col sm:flex-row mb-6 space-y-4 sm:space-y-0 sm:space-x-4">
-        <div className="relative flex-grow">
-          <input
-            type="text"
-            placeholder="Search resources..."
-            className="w-full p-2 pl-10 border rounded-md"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <Search className="absolute left-3 top-2.5 text-gray-400" size={20} />
-        </div>
-        <select
-          className="p-2 border rounded-md"
-          value={filterType}
-          onChange={(e) => setFilterType(e.target.value)}
+      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8 text-center">
+        <Users size={64} className="mx-auto mb-6 text-blue-600" />
+        
+        <h2 className="text-2xl font-semibold mb-4">Connect with 1000+ Learners Just Like You!</h2>
+        
+        <p className="text-gray-600 mb-6">
+          Join our WhatsApp community to network, share insights, and grow together. 
+          Get access to exclusive resources, mentorship opportunities, and real-time support.
+        </p>
+        
+        <a 
+          href={whatsappGroupLink} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="inline-flex items-center bg-green-500 text-white py-3 px-6 rounded-full hover:bg-green-600 transition duration-300 text-lg"
         >
-          <option value="">All Types</option>
-          <option value="pdf">PDF</option>
-          <option value="ppt">PowerPoint</option>
-          <option value="doc">Word Document</option>
-        </select>
+          <Users size={24} className="mr-2" />
+          Join WhatsApp Group
+        </a>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {filteredResources.map(resource => (
-          <div key={resource.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-4xl">{getFileIcon(resource.fileType)}</span>
-                <span className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                  {resource.fileType.toUpperCase()}
-                </span>
-              </div>
-              <h2 className="text-xl font-semibold mb-2">{resource.title}</h2>
-              <div className="flex items-center text-sm text-gray-600 mb-3">
-                <User size={16} className="mr-1" />
-                <span className="mr-4">{resource.uploadedBy}</span>
-                <Calendar size={16} className="mr-1" />
-                <span>{new Date(resource.uploadDate).toLocaleDateString()}</span>
-              </div>
-              <p className="text-gray-600 mb-4">{resource.description}</p>
-              <div className="flex items-center justify-between mt-4">
-                <span className="text-sm text-gray-500">{resource.fileSize}</span>
-                <button
-                  onClick={() => handleDownload(resource)}
-                  className="flex items-center bg-black text-white py-2 px-4 rounded-full hover:bg-gray-800 transition duration-300"
-                >
-                  <Download size={16} className="mr-2" />
-                  Download
-                </button>
-              </div>
-            </div>
+      <div className="mt-12 grid md:grid-cols-2 gap-8">
+        {/* Upcoming Podcasts Section */}
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <Podcast size={48} className="text-purple-600 mb-4" />
+          <h3 className="text-2xl font-semibold mb-4">Upcoming Podcasts</h3>
+          <p className="text-gray-600">
+            Stay tuned for our upcoming podcasts. We'll announce details about guest speakers, 
+            topics, and broadcast dates right here.
+          </p>
+          <div className="mt-4 text-sm text-gray-500">
+            No upcoming podcasts at the moment. Check back soon!
           </div>
-        ))}
+        </div>
+
+        {/* Mentor Onboarding Section */}
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <UserPlus size={48} className="text-blue-600 mb-4" />
+          <h3 className="text-2xl font-semibold mb-4">Mentor Onboarding</h3>
+          <p className="text-gray-600">
+            Interested in becoming a mentor or learning about our mentorship programs? 
+            We'll share updates and opportunities here.
+          </p>
+          <div className="mt-4 text-sm text-gray-500">
+            Mentor applications will be opening soon. Stay connected!
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default ResourcesPage;
+export default CommunityPage;

@@ -109,9 +109,9 @@ const NavHeader = () => {
           </div>
 
           <nav className="nav-list hidden md:flex items-center space-x-8">
-            <NavLink href="/about" className="nav-link">About</NavLink>
+            <NavLink href="/about" className="nav-link">Home</NavLink>
             <NavLink href="/blogs" className="nav-link">Blogs</NavLink>
-            <NavLink href="/resources" className="nav-link">Resources</NavLink>
+            <NavLink href="/communityPage" className="nav-link">Community</NavLink>
             <NavLink href="/podcasts" className="nav-link">Podcasts</NavLink>
             <NavLink href="/job-board" className="nav-link">Job Board</NavLink>
             <NavLink href="/resume-evaluator" className="nav-link">Resume Evaluator</NavLink>
@@ -141,10 +141,13 @@ const NavHeader = () => {
             <div className="divide-y divide-gray-200">
               <nav className="flex flex-col space-y-1 py-3">
                 <MobileNavLink href="/about" onClick={() => setIsMenuOpen(false)}>
-                  About
+                  Home
                 </MobileNavLink>
                 <MobileNavLink href="/blogs" onClick={() => setIsMenuOpen(false)}>
                   Blogs
+                </MobileNavLink>
+                <MobileNavLink href="/communityPage" onClick={() => setIsMenuOpen(false)}>
+                  Community
                 </MobileNavLink>
                 <MobileNavLink href="/podcasts" onClick={() => setIsMenuOpen(false)}>
                   Podcasts
@@ -176,7 +179,7 @@ const NavHeader = () => {
 const NavLink = ({ href, children }) => (
   <a
     href={href}
-    className="relative font-medium text-black transition-colors before:absolute before:-bottom-1 before:h-0.5 before:w-full before:origin-left before:scale-x-0 before:bg-gray-900 before:transition-transform hover:text-gray-900 hover:before:scale-x-100 dark:text-black dark:before:bg-white"
+    className="relative font-medium text-black transition-colors before:absolute before:-bottom-1 before:h-0.5 before:w-full before:origin-left before:scale-x-0 before:bg-gray-900 before:transition-transform hover:text-gray-900 hover:before:scale-x-100 dark:text-black dark:before:bg-neutral-950"
   >
     {children}
   </a>

@@ -15,9 +15,13 @@ import ProtectedRoute from './components/ProtectedRoute';
 import LoadingSpinner from './components/LoadingSpinner';
 import ResumeEvaluator from './pages/ResumeEvaluator';
 import Podcasts from './pages/Podcasts';
-import ResourcesPage from './pages/Resources';
+import CommunityPage from './pages/Resources';
 import './index.css';
 import ChatbotPopup from './components/Chatbot';
+import { Toaster } from 'react-hot-toast';
+import Footer from './components/Footer';
+import PrivacyPolicy from './components/PrivacyPolicy';
+import TermsOfService from './components/TermsOfService';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -41,6 +45,7 @@ function App() {
     <Router>
       <div className="min-h-screen bg-gray-50">
         {/* Header will show different nav items based on auth state */}
+        <Toaster />
         <Header isAuthenticated={!!user} />
         
         <main>
@@ -50,6 +55,8 @@ function App() {
             <Route path="/job-board" element={<JobBoard />} />
             <Route path="/resume-evaluator" element={<ResumeEvaluator />} />
             <Route path="/podcasts" element={<Podcasts />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
             
             {/* Auth routes - Redirect to blogs if already logged in */}
             <Route 
@@ -83,10 +90,10 @@ function App() {
               }
             />
             <Route
-              path="/resources"
+              path="/communityPage"
               element={
                 <ProtectedRoute>
-                  <ResourcesPage />
+                  <CommunityPage />
                 </ProtectedRoute>
               }
             />
@@ -97,6 +104,7 @@ function App() {
         </main>
         <ChatbotPopup />
       </div>
+      <Footer/>
     </Router>
   );
 }

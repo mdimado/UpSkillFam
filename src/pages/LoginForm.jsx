@@ -3,7 +3,27 @@ import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../firebase';
 import { Mail, Lock, LogIn } from 'lucide-react';
+import { toast } from 'react-hot-toast';
 import '../App.css'
+
+const getErrorMessage = (errorCode) => {
+  switch (errorCode) {
+    case 'auth/invalid-credential':
+      return 'Incorrect email or password. Please try again.';
+    case 'auth/user-not-found':
+      return 'No account found with this email. Please sign up.';
+    case 'auth/wrong-password':
+      return 'Incorrect password. Please try again.';
+    case 'auth/too-many-requests':
+      return 'Too many login attempts. Please try again later.';
+    case 'auth/network-request-failed':
+      return 'Network error. Please check your connection.';
+    case 'auth/invalid-email':
+      return 'Invalid email format. Please check your email.';
+    default:
+      return 'An unexpected error occurred. Please try again.';
+  }
+};
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
@@ -15,9 +35,26 @@ const LoginForm = () => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      toast.success('Welcome back!', {
+        duration: 3000,
+        position: 'top-center',
+        style: {
+          background: '#4CAF50',
+          color: 'white',
+        }
+      });
       navigate('/blogs');
     } catch (error) {
-      setError(error.message);
+      const friendlyMessage = getErrorMessage(error.code);
+      toast.error(friendlyMessage, {
+        duration: 4000,
+        position: 'top-center',
+        style: {
+          background: '#FF6B6B',
+          color: 'white',
+        }
+      });
+      setError(friendlyMessage);
     }
   };
 
@@ -25,17 +62,43 @@ const LoginForm = () => {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
-      alert("Logged in with Google successfully!");
+      toast.success('Welcome back!', {
+        duration: 3000,
+        position: 'top-center',
+        style: {
+          background: '#4CAF50',
+          color: 'white',
+        }
+      });
       navigate('/'); 
     } catch (error) {
-      alert(error.message);
+      const friendlyMessage = getErrorMessage(error.code);
+      toast.error(friendlyMessage, {
+        duration: 4000,
+        position: 'top-center',
+        style: {
+          background: '#FF6B6B',
+          color: 'white',
+        }
+      });
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-lg">
+    <div className="max-h-screen flex items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+      <video 
+        className="fixed z-0 min-w-full min-h-full w-auto h-auto top-0 left-0 object-cover"
+        autoPlay 
+        loop 
+        muted 
+        playsInline
+      >
+        <source src="loginvid.mp4" type="video/mp4" />
+      </video>
+      <div className="relative z-10 max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-lg">
+        
         <div className="text-center">
+          
           <Link to="/" className="inline-block mb-6">
             <img src="/logo.png" alt="Logo" className="h-12 mx-auto" />
           </Link>
@@ -111,7 +174,9 @@ const LoginForm = () => {
             <i className="fa-brands fa-google" aria-hidden="true"></i> Sign in with Google
           </button>
         </form>
+        
       </div>
+      
     </div>
   );
 };

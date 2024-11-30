@@ -4,6 +4,23 @@ import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } f
 import { doc, setDoc } from 'firebase/firestore';
 import { auth, firestore } from '../firebase';
 import { Mail, Lock, User, Phone, GraduationCap, Sparkles, CalendarClock } from 'lucide-react';
+import { toast } from 'react-hot-toast';
+import '../App.css'
+
+const getErrorMessage = (errorCode) => {
+  switch (errorCode) {
+    case 'auth/email-already-in-use':
+      return 'Email is already registered. Please use a different email or try logging in.';
+    case 'auth/invalid-email':
+      return 'Invalid email format. Please check your email address.';
+    case 'auth/weak-password':
+      return 'Password is too weak. Please choose a stronger password.';
+    case 'auth/network-request-failed':
+      return 'Network error. Please check your internet connection.';
+    default:
+      return 'An unexpected error occurred during signup. Please try again.';
+  }
+};
 
 const SignupForm = () => {
   const [formData, setFormData] = useState({
@@ -15,7 +32,7 @@ const SignupForm = () => {
     major: '',
     skills: ''
   });
-  const [error, setError] = useState('');
+  const [termsAgreed, setTermsAgreed] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -27,6 +44,20 @@ const SignupForm = () => {
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    
+    // Check if terms are agreed before proceeding
+    if (!termsAgreed) {
+      toast.error('Please agree to the privacy policy and terms of service', {
+        duration: 4000,
+        position: 'top-center',
+        style: {
+          background: '#FF6B6B',
+          color: 'white',
+        }
+      });
+      return;
+    }
+
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -44,20 +75,65 @@ const SignupForm = () => {
         createdAt: new Date().toISOString()
       });
 
+      toast.success('Account created successfully!', {
+        duration: 3000,
+        position: 'top-center',
+        style: {
+          background: '#4CAF50',
+          color: 'white',
+        }
+      });
+
       navigate('/blogs');
     } catch (error) {
-      setError(error.message);
+      const friendlyMessage = getErrorMessage(error.code);
+      toast.error(friendlyMessage, {
+        duration: 4000,
+        position: 'top-center',
+        style: {
+          background: '#FF6B6B',
+          color: 'white',
+        }
+      });
     }
   };
 
   const handleGoogleSignIn = async () => {
+    // Check if terms are agreed before proceeding
+    if (!termsAgreed) {
+      toast.error('Please agree to the privacy policy and terms of service', {
+        duration: 4000,
+        position: 'top-center',
+        style: {
+          background: '#FF6B6B',
+          color: 'white',
+        }
+      });
+      return;
+    }
+
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
-      alert("Logged in with Google successfully!");
+      toast.success('Signed up with Google successfully!', {
+        duration: 3000,
+        position: 'top-center',
+        style: {
+          background: '#4CAF50',
+          color: 'white',
+        }
+      });
       navigate('/'); 
     } catch (error) {
-      alert(error.message);
+      const friendlyMessage = getErrorMessage(error.code);
+      toast.error(friendlyMessage, {
+        duration: 4000,
+        position: 'top-center',
+        style: {
+          background: '#FF6B6B',
+          color: 'white',
+        }
+      });
     }
   };
 
@@ -73,11 +149,16 @@ const SignupForm = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
-      <video className="background-video" autoPlay loop muted>
-        <source src="/loginvid.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
+      <video 
+        className="fixed z-0 min-w-full min-h-full w-auto h-auto top-0 left-0 object-cover"
+        autoPlay 
+        loop 
+        muted 
+        playsInline
+      >
+        <source src="loginvid.mp4" type="video/mp4" />
       </video>
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-lg my-8">
+      <div className="relative z-10 max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-lg my-8">
         <div className="text-center">
           <Link to="/" className="inline-block mb-6">
             <img src="/logo.png" alt="Logo" className="h-12 mx-auto" />
@@ -90,12 +171,6 @@ const SignupForm = () => {
             </Link>
           </p>
         </div>
-
-        {error && (
-          <div className="bg-red-50 text-red-800 p-4 rounded-lg text-sm">
-            {error}
-          </div>
-        )}
 
         <form onSubmit={handleSignup} className="space-y-6 mt-8">
           {inputFields.map((field) => (
@@ -121,16 +196,54 @@ const SignupForm = () => {
             </div>
           ))}
 
+          {/* New Terms and Privacy Checkbox */}
+          <div className="flex items-center">
+            <input
+              id="terms"
+              name="terms"
+              type="checkbox"
+              checked={termsAgreed}
+              onChange={(e) => setTermsAgreed(e.target.checked)}
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            />
+            <label htmlFor="terms" className="ml-2 block text-sm text-gray-900">
+              I have read and agree to the{' '}
+              <Link 
+                to="/privacy-policy" 
+                className="text-blue-600 hover:text-blue-700 underline"
+              >
+                Privacy Policy
+              </Link>{' '}
+              and{' '}
+              <Link 
+                to="/terms-of-service" 
+                className="text-blue-600 hover:text-blue-700 underline"
+              >
+                Terms of Service
+              </Link>
+            </label>
+          </div>
+
           <button
             type="submit"
-            className="w-full flex items-center justify-center gap-2 bg-black text-white py-2 px-6 rounded-full hover:bg-gray-800 transition duration-300"
+            disabled={!termsAgreed}
+            className={`w-full flex items-center justify-center gap-2 text-white py-2 px-6 rounded-full transition duration-300 ${
+              termsAgreed 
+                ? 'bg-black hover:bg-gray-800' 
+                : 'bg-gray-400 cursor-not-allowed'
+            }`}
           >
             <User size={20} />
             Create Account
           </button>
           <button 
-            onClick={handleGoogleSignIn} 
-            className="w-full flex items-center justify-center gap-2 py-2 px-6 rounded-full google-signin-btn"
+            onClick={handleGoogleSignIn}
+            disabled={!termsAgreed}
+            className={`w-full flex items-center justify-center gap-2 py-2 px-6 rounded-full ${
+              termsAgreed 
+                ? 'google-signin-btn' 
+                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+            }`}
           >
             <i className="fa-brands fa-google" aria-hidden="true"></i> Sign Up with Google
           </button>
