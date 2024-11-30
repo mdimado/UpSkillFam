@@ -2,6 +2,7 @@ import { Component } from 'react';
 import './index.css'; 
 import InfiniteCarousel from '../InfiniteCarousel';
 import FAQSection from '../FaqSection';
+import {Podcast} from 'lucide-react';
 
 const NavLink = ({ href, children }) => (
   <a
@@ -77,7 +78,7 @@ class Home extends Component {
                     trainings
                     <span className='ampersand-container'>
                       <div className='ampersand'>&</div>
-                      <div className='bag-icon'><i className="fas fa-shopping-bag"></i></div>
+                      <div className='bag-icon'><Podcast className="h-11 w-11"/></div>
                     </span>
                     <div>
                       mentors
