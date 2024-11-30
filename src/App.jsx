@@ -52,7 +52,7 @@ function App() {
           <Routes>
             {/* Public routes */}
             <Route path="/" element={<Home />} />
-            <Route path="/job-board" element={<JobBoard />} />
+            <Route path="/jobs" element={<JobBoard />} />
             <Route path="/resume-evaluator" element={<ResumeEvaluator />} />
             <Route path="/podcasts" element={<Podcasts />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />

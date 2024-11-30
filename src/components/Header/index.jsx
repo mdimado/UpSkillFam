@@ -113,7 +113,7 @@ const NavHeader = () => {
             <NavLink href="/blogs" className="nav-link">Blogs</NavLink>
             <NavLink href="/communityPage" className="nav-link">Community</NavLink>
             <NavLink href="/podcasts" className="nav-link">Podcasts</NavLink>
-            <NavLink href="/job-board" className="nav-link">Job Board</NavLink>
+            <NavLink href="/jobs" className="nav-link">Job Board</NavLink>
             <NavLink href="/resume-evaluator" className="nav-link">Resume Evaluator</NavLink>
           </nav>
 
