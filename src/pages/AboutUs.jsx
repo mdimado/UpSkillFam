@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GlobeIcon, UsersIcon, SparklesIcon } from 'lucide-react';
+import { GlobeIcon, UsersIcon, SparklesIcon, LinkedinIcon } from 'lucide-react';
 
-const TeamMember = ({ name, role, image, description }) => {
+const TeamMember = ({ name, role, image, description, linkedinUrl }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -30,14 +30,28 @@ const TeamMember = ({ name, role, image, description }) => {
           />
         </motion.div>
         <div className="text-center md:text-left w-full">
-          <motion.h3 
-            className="text-2xl sm:text-3xl font-bold text-black mb-2"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            {name}
-          </motion.h3>
+          <div className="flex items-center justify-center md:justify-start gap-4 mb-2">
+            <motion.h3 
+              className="text-2xl sm:text-3xl font-bold text-black"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              {name}
+            </motion.h3>
+            {linkedinUrl && (
+              <motion.a 
+                href={linkedinUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:text-blue-800 transition-colors"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <LinkedinIcon className="w-6 h-6" />
+              </motion.a>
+            )}
+          </div>
           <motion.p 
             className="text-lg sm:text-xl font-medium text-gray-600 mb-4"
             initial={{ opacity: 0 }}
@@ -91,26 +105,30 @@ const AboutUs = () => {
     {
       name: "Nihith Tallapalli",
       role: "Founder & Head of Growth",
-      image: "https://via.placeholder.com/300",
-      description: "A visionary entrepreneur with over 15 years of experience in education technology. Sarah's passion is bridging the gap between learning and real-world skills."
+      image: "/nihith.jpg",
+      description: "Hey there! I'm a 3rd-year CS undergrad at Chaitanya Bharathi Institute of Technology, rocking life as a MERN developer and budding data engineer. Beyond the code, you'll find me diving into MUNs, geeking out over business case studies, or just helping others figure out their paths—just like I did. Life's all about growth and good vibes, so let's make it happen!",
+      linkedinUrl: "https://www.linkedin.com/in/nihitht/"
     },
     {
       name: "Mohammed Imaduddin",
       role: "Co-Founder & Tech Lead",
-      image: "https://via.placeholder.com/300",
-      description: "An expert in curriculum design with a background in corporate training. Michael ensures our learning paths are cutting-edge and industry-relevant."
+      image: "/imad.jpg",
+      description: "Hey! I'm a 3rd-year CS undergrad at Chaitanya Bharathi Institute of Technology and a full-stack developer by trade. I'm all about hackathons (bonus points if they help me skip class) and super excited to be part of this community. Let's build something awesome together!",
+      linkedinUrl: "https://www.linkedin.com/in/mdimado/"
     },
     {
       name: "Ajith Sai Chekka",
       role: "Co-Founder & Head of Outreach - Tech",
-      image: "https://via.placeholder.com/300",
-      description: "A community builder who believes in the power of networking. Elena manages our global network of mentors and ensures meaningful connections."
+      image: "/ajith.jpg",
+      description: "I was too lazy to write a para about myself.",
+      linkedinUrl: "https://www.linkedin.com/in/ajith-sai/"
     },
     {
       name: "Lakshyaa Kansagara",
       role: "Head of Outreach - Design",
-      image: "https://via.placeholder.com/300",
-      description: "A senior software engineer who drives our platform's technological innovation. David ensures our users get the most seamless learning experience."
+      image: "/lakshyaa.jpg",
+      description: "I'm a Design student at NIFT, specializing in Fashion Communication, with a deep passion for blending creativity and technology. My interests lie in Graphic Design and UI/UX, where I love turning ideas into visually engaging and user-friendly experiences. I believe great design is not just about aesthetics but also about connecting with people and making their lives easier. I'm curious, adaptable, and driven to explore new challenges that push me to grow and create meaningful work.",
+      linkedinUrl: "https://www.linkedin.com/in/lakshyaa-kansagara-3561b1259/"
     }
   ];
 
