@@ -8,15 +8,28 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import CommentSection from '../components/CommentSection';
+import { auth } from '../firebase';
+
 
 const BlogPage = () => {
   const { id } = useParams();
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setCurrentUser(user);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     fetchBlog();
   }, [id]);
+
 
   const fetchBlog = async () => {
     try {
@@ -106,6 +119,10 @@ const BlogPage = () => {
           </div>
         </div>
       </div>
+      <CommentSection 
+        blogId={id} 
+        currentUser={currentUser} 
+      />
     </div>
   );
 };

@@ -8,6 +8,7 @@ const BlogsPage = () => {
   const [blogs, setBlogs] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
+  const [availableCategories, setAvailableCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -17,6 +18,7 @@ const BlogsPage = () => {
 
   const fetchBlogs = async () => {
     try {
+      // Fetch blogs
       const blogsQuery = query(collection(db, 'blogs'), orderBy('date', 'desc'));
       const querySnapshot = await getDocs(blogsQuery);
       const blogsList = querySnapshot.docs.map(doc => ({
@@ -24,6 +26,11 @@ const BlogsPage = () => {
         ...doc.data()
       }));
       setBlogs(blogsList);
+
+      // Extract unique categories
+      const uniqueCategories = [...new Set(blogsList.map(blog => blog.category))];
+      setAvailableCategories(uniqueCategories);
+
       setLoading(false);
     } catch (error) {
       console.error('Error fetching blogs:', error);
@@ -70,11 +77,11 @@ const BlogsPage = () => {
           onChange={(e) => setFilterCategory(e.target.value)}
         >
           <option value="">All Categories</option>
-          <option value="Web Development">Web Development</option>
-          <option value="Backend">Backend</option>
-          <option value="CSS">CSS</option>
-          <option value="JavaScript">JavaScript</option>
-          <option value="React">React</option>
+          {availableCategories.map(category => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
         </select>
       </div>
 
