@@ -7,16 +7,18 @@ const TeamMember = ({ name, role, image, description, linkedinUrl }) => {
 
   return (
     <motion.div 
-      className="bg-white rounded-3xl shadow-xl overflow-hidden group border border-gray-100"
+      className="bg-white rounded-3xl shadow-xl overflow-hidden group border border-gray-100 relative"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
       whileHover={{ 
         scale: 1.02,
-        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" 
       }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="flex flex-col md:flex-row items-center p-6 sm:p-8 relative">
+      <div className="flex flex-col md:flex-row items-center p-6 sm:p-8">
         <motion.div 
           className="w-40 h-40 sm:w-56 sm:h-56 mb-6 md:mb-0 md:mr-8 rounded-2xl overflow-hidden mx-auto md:mx-0 relative"
           whileHover={{ scale: 1.05 }}
@@ -26,9 +28,10 @@ const TeamMember = ({ name, role, image, description, linkedinUrl }) => {
           <img 
             src={image} 
             alt={name} 
-            className="w-full h-full object-cover grayscale"
+            className="w-full h-full object-cover"
           />
         </motion.div>
+        
         <div className="text-center md:text-left w-full">
           <div className="flex items-center justify-center md:justify-start gap-4 mb-2">
             <motion.h3 
@@ -40,16 +43,14 @@ const TeamMember = ({ name, role, image, description, linkedinUrl }) => {
               {name}
             </motion.h3>
             {linkedinUrl && (
-              <motion.a 
+              <a 
                 href={linkedinUrl} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:text-blue-800 transition-colors"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
               >
                 <LinkedinIcon className="w-6 h-6" />
-              </motion.a>
+              </a>
             )}
           </div>
           <motion.p 
@@ -60,7 +61,7 @@ const TeamMember = ({ name, role, image, description, linkedinUrl }) => {
           >
             {role}
           </motion.p>
-          
+
           <AnimatePresence>
             {isHovered && (
               <motion.div
@@ -76,14 +77,9 @@ const TeamMember = ({ name, role, image, description, linkedinUrl }) => {
             )}
           </AnimatePresence>
         </div>
-        
-        <div 
-          className="absolute inset-0 z-10" 
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        />
       </div>
     </motion.div>
+
   );
 };
 
@@ -113,7 +109,7 @@ const AboutUs = () => {
       name: "Mohammed Imaduddin",
       role: "Co-Founder & Tech Lead",
       image: "/imad.jpg",
-      description: "Hey! I'm a 3rd-year CS undergrad at Chaitanya Bharathi Institute of Technology and a full-stack developer by trade. I'm all about hackathons (bonus points if they help me skip class) and super excited to be part of this community. Let's build something awesome together!",
+      description: "Hey! I’m a 3rd-year Computer Science undergrad at Chaitanya Bharathi Institute of Technology, passionate about full-stack development and exploring the frontiers of AI and machine learning. When I’m not coding, you’ll find me mentoring peers in open-source technologies, organizing hackathons, or exploring the awesome world of game dev. I’m all about working on cool, impactful projects, picking up new tech skills, and teaming up with creative folks to turn big ideas into reality.",
       linkedinUrl: "https://www.linkedin.com/in/mdimado/"
     },
     {
