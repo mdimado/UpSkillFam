@@ -53,7 +53,7 @@ const BlogPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Link to="/" className="inline-flex items-center text-gray-600 hover:text-gray-800 mb-4">
+      <Link to="/blogs" className="inline-flex items-center text-gray-600 hover:text-gray-800 mb-4">
         <ArrowLeft size={20} className="mr-2" />
         Back to Blogs
       </Link>
