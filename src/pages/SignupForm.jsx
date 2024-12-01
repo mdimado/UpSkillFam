@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { auth, firestore } from '../firebase';
-import { Mail, Lock, User, Phone, GraduationCap, Sparkles, CalendarClock } from 'lucide-react';
+import { Mail, Lock, User, Phone, GraduationCap, Sparkles, CalendarClock, Building } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import '../App.css'
 
@@ -30,7 +30,8 @@ const SignupForm = () => {
     phone: '',
     age: '',
     major: '',
-    skills: ''
+    skills: '',
+    college: '' // New field added
   });
   const [termsAgreed, setTermsAgreed] = useState(false);
   const navigate = useNavigate();
@@ -72,6 +73,7 @@ const SignupForm = () => {
         age: formData.age,
         major: formData.major,
         skills: formData.skills,
+        college: formData.college, // New field added
         createdAt: new Date().toISOString()
       });
 
@@ -145,6 +147,7 @@ const SignupForm = () => {
     { name: 'age', label: 'Age', type: 'number', icon: CalendarClock, placeholder: 'Enter your age' },
     { name: 'major', label: 'Major', type: 'text', icon: GraduationCap, placeholder: 'Enter your major' },
     { name: 'skills', label: 'Skills', type: 'text', icon: Sparkles, placeholder: 'Enter your skills' },
+    { name: 'college', label: 'College/Organization', type: 'text', icon: Building, placeholder: 'Enter your college or organization' }, // New field
   ];
 
   return (
@@ -196,7 +199,7 @@ const SignupForm = () => {
             </div>
           ))}
 
-          {/* New Terms and Privacy Checkbox */}
+          {/* Rest of the component remains the same */}
           <div className="flex items-center">
             <input
               id="terms"

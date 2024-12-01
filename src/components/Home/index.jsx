@@ -13,7 +13,6 @@ const NavLink = ({ href, children }) => (
   </a>
 );
 
-
 class Home extends Component {
   state = {
     isDarkMode: false,
@@ -32,12 +31,7 @@ class Home extends Component {
     }));
   };
 
-
-  
-  
-
   render() {
-
     const carouselItems = [
       { src: "/hlogo.png", alt: "Company 1" },
       { src: "/mlogo.jpg", alt: "Company 2" },
@@ -48,10 +42,8 @@ class Home extends Component {
       { src: "/iglogo.jpg", alt: "Company 7" },
     ];
 
-
     const { isDarkMode, activeIndex } = this.state;
    
-
     return (
       <div className="home-container">
           <video 
@@ -92,8 +84,18 @@ class Home extends Component {
               <p className="text-lg md:text-xl lg:text-2xl">
                 Everything you need to succeed in any domain is all right here with our world class mentors.
               </p>
-             <NavLink href='/signup'> <button className="get-started-btn">Get Started</button></NavLink>
-              <span className="request-demo">Who are we?</span>
+              <div className="flex flex-col sm:flex-row items-center gap-4 w-full max-w-md">
+                <NavLink href='/communityPage' className="w-full"> 
+                  <button className="get-started-btn w-full px-6 py-2 min-w-[150px] rounded-md">
+                    Get Started
+                  </button>
+                </NavLink>
+                <NavLink href='/about' className="w-full"> 
+                  <button className="who-we-are-btn w-full border border-black text-black hover:bg-black hover:text-white transition-colors px-6 py-2 min-w-[150px] rounded-md">
+                    Who are we?
+                  </button>
+                </NavLink>
+              </div>
             </div>
           </div>
         </div>
