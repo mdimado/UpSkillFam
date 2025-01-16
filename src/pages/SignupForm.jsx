@@ -6,6 +6,7 @@ import { auth, firestore } from '../firebase';
 import { Mail, Lock, User, Phone, GraduationCap, Sparkles, CalendarClock, Building } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import '../App.css'
+import { useLocation } from 'react-router-dom';
 
 const getErrorMessage = (errorCode) => {
   switch (errorCode) {
@@ -35,6 +36,7 @@ const SignupForm = () => {
   });
   const [termsAgreed, setTermsAgreed] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleChange = (e) => {
     setFormData({
@@ -43,10 +45,21 @@ const SignupForm = () => {
     });
   };
 
+  const handleSuccessfulSignup = () => {
+    const { state } = location;
+    if (state?.jobId) {
+      navigate(`/jobs/${state.jobId}`);
+      if (state.returnUrl) {
+        window.open(state.returnUrl, '_blank');
+      }
+    } else {
+      navigate('/blogs');
+    }
+  };
+
   const handleSignup = async (e) => {
     e.preventDefault();
     
-    // Check if terms are agreed before proceeding
     if (!termsAgreed) {
       toast.error('Please agree to the privacy policy and terms of service', {
         duration: 4000,
@@ -73,7 +86,7 @@ const SignupForm = () => {
         age: formData.age,
         major: formData.major,
         skills: formData.skills,
-        college: formData.college, // New field added
+        college: formData.college,
         createdAt: new Date().toISOString()
       });
 
@@ -86,7 +99,7 @@ const SignupForm = () => {
         }
       });
 
-      navigate('/blogs');
+      handleSuccessfulSignup();
     } catch (error) {
       const friendlyMessage = getErrorMessage(error.code);
       toast.error(friendlyMessage, {
@@ -101,7 +114,6 @@ const SignupForm = () => {
   };
 
   const handleGoogleSignIn = async () => {
-    // Check if terms are agreed before proceeding
     if (!termsAgreed) {
       toast.error('Please agree to the privacy policy and terms of service', {
         duration: 4000,
@@ -125,7 +137,7 @@ const SignupForm = () => {
           color: 'white',
         }
       });
-      navigate('/'); 
+      handleSuccessfulSignup();
     } catch (error) {
       const friendlyMessage = getErrorMessage(error.code);
       toast.error(friendlyMessage, {

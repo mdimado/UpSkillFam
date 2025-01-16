@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { collection, getDocs} from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 import { 
   Briefcase, 
   Map, 
@@ -12,9 +13,11 @@ import {
   FolderX,
   ChartNoAxesColumn,
   BookOpenText,
-  MapPin
+  MapPin,
+  Share2
 } from 'lucide-react';
 import { db, auth } from '../firebase';
+import { Outlet } from 'react-router-dom';
 
 // Helper function to check salary range (moved outside the component)
 const checkSalaryRange = (salary, range) => {
@@ -30,6 +33,7 @@ const checkSalaryRange = (salary, range) => {
 };
 
 const JobBoard = () => {
+  const navigate = useNavigate();
   const [jobs, setJobs] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -40,14 +44,35 @@ const JobBoard = () => {
   const [salaryRangeFilter, setSalaryRangeFilter] = useState('');
   const [jobTypeFilter, setJobTypeFilter] = useState('');
   const [experienceLevelFilter, setExperienceLevelFilter] = useState('');
-
-  // Unique filter options (extracted from jobs)
+  const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
+  
+  // Unique filter options (unchanged)
   const [uniqueLocations, setUniqueLocations] = useState([]);
   const [uniqueJobTypes, setUniqueJobTypes] = useState([]);
   const [uniqueExperienceLevels, setUniqueExperienceLevels] = useState([]);
 
-  // Advanced filter drawer state
-  const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
+  // Handle job application click
+  const handleApplyClick = (applyLink) => {
+    if (!auth.currentUser) {
+      navigate('/login', { state: { returnUrl: applyLink } });
+    } else {
+      window.open(applyLink, '_blank');
+    }
+  };
+
+  const handleShareClick = (jobId) => {
+    const shareUrl = `${window.location.origin}/jobs/${jobId}`;
+    if (navigator.share) {
+      navigator.share({
+        title: 'Job Opportunity',
+        url: shareUrl
+      }).catch((error) => console.log('Error sharing:', error));
+    } else {
+      navigator.clipboard.writeText(shareUrl)
+        .then(() => alert('Link copied to clipboard!'))
+        .catch((error) => console.log('Error copying link:', error));
+    }
+  };
 
   // Loading State Component
   const LoadingState = () => (
@@ -56,7 +81,6 @@ const JobBoard = () => {
     </div>
   );
 
-  // No Jobs Found Component
   const NoJobsFound = ({ isSearching }) => (
     <div className="flex flex-col items-center justify-center py-16 text-center">
       {isSearching ? <Search className="h-16 w-16 text-gray-400 mb-4" /> : <FolderX className="h-16 w-16 text-gray-400 mb-4" />}
@@ -71,13 +95,7 @@ const JobBoard = () => {
       </p>
       {isSearching && (
         <button 
-          onClick={() => {
-            setSearchTerm('');
-            setLocationFilter('');
-            setSalaryRangeFilter('');
-            setJobTypeFilter('');
-            setExperienceLevelFilter('');
-          }}
+          onClick={resetFilters}
           className="mt-4 bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800"
         >
           Reset Search
@@ -281,7 +299,16 @@ const JobBoard = () => {
               key={job.id} 
               className="border rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow"
             >
-              <h2 className="text-xl font-semibold mb-2">{job.title}</h2>
+              <div className="flex justify-between items-start mb-2">
+                <h2 className="text-xl font-semibold">{job.title}</h2>
+                <button
+                  onClick={() => handleShareClick(job.id)}
+                  className="text-gray-500 hover:text-black"
+                  title="Share job"
+                >
+                  <Share2 className="h-5 w-5" />
+                </button>
+              </div>
               <div className="space-y-2 text-gray-600 mb-4">
                 <p className="flex items-center">
                   <Briefcase className="mr-2 h-4 w-4" />
@@ -312,18 +339,17 @@ const JobBoard = () => {
                   Posted: {job.postDate}
                 </p>
               </div>
-              <a 
-                href={job.applyLink} 
-                target="_blank" 
-                rel="noopener noreferrer"
+              <button 
+                onClick={() => handleApplyClick(job.applyLink)}
                 className="w-full bg-black text-white py-2 px-4 rounded-md hover:bg-gray-800 flex items-center justify-center"
               >
                 <LogIn className="mr-2 h-4 w-4" /> Apply Now
-              </a>
+              </button>
             </div>
           ))}
         </div>
       )}
+      <Outlet />
     </div>
   );
 };

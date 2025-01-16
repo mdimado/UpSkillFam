@@ -5,6 +5,7 @@ import { auth } from '../firebase';
 import { Mail, Lock, LogIn } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import '../App.css'
+import { useLocation } from 'react-router-dom';
 
 const getErrorMessage = (errorCode) => {
   switch (errorCode) {
@@ -30,6 +31,19 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const location = useLocation(); // Add this
+
+  const handleSuccessfulLogin = () => {
+    const { state } = location;
+    if (state?.jobId) {
+      navigate(`/jobs/${state.jobId}`);
+      if (state.returnUrl) {
+        window.open(state.returnUrl, '_blank');
+      }
+    } else {
+      navigate('/blogs');
+    }
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -43,7 +57,7 @@ const LoginForm = () => {
           color: 'white',
         }
       });
-      navigate('/blogs');
+      handleSuccessfulLogin();
     } catch (error) {
       const friendlyMessage = getErrorMessage(error.code);
       toast.error(friendlyMessage, {
@@ -70,7 +84,7 @@ const LoginForm = () => {
           color: 'white',
         }
       });
-      navigate('/'); 
+      handleSuccessfulLogin();
     } catch (error) {
       const friendlyMessage = getErrorMessage(error.code);
       toast.error(friendlyMessage, {

@@ -9,6 +9,7 @@ import Home from './components/Home';
 import LoginForm from './pages/LoginForm';
 import SignupForm from './pages/SignupForm';
 import JobBoard from './pages/JobBoard';
+import JobDetailsModal from './components/JobDetailsModal';  // Add this import
 import BlogsPage from './pages/Blogs';
 import BlogPage from './pages/BlogPage';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -39,13 +40,12 @@ function App() {
   }, []);
 
   if (loading) {
-    return <LoadingSpinner />; // Create a loading component for better UX
+    return <LoadingSpinner />;
   }
 
   return (
     <Router>
       <div className="min-h-screen bg-gray-50">
-        {/* Header will show different nav items based on auth state */}
         <Toaster />
         <Header isAuthenticated={!!user} />
         
@@ -53,7 +53,9 @@ function App() {
           <Routes>
             {/* Public routes */}
             <Route path="/" element={<Home />} />
-            <Route path="/jobs" element={<JobBoard />} />
+            <Route path="/jobs" element={<JobBoard />}>
+              <Route path=":id" element={<JobDetailsModal />} />
+            </Route>
             <Route path="/about" element={<AboutUs />} />
             <Route path="/resume-evaluator" element={<ResumeEvaluator />} />
             <Route path="/podcasts" element={<Podcasts />} />
